@@ -1,0 +1,35 @@
+name: Mod log sync
+on:
+  workflow_dispatch:
+  schedule:
+    # Default: every twelve hours.
+    # @link https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#onschedule
+    - cron: '0 */12 * * *'
+
+# Concurrency prevents duplicate runs at the same time.
+concurrency: sync
+
+jobs:
+  sync:
+    name: Mod log sync
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: none
+          php-version: 8.1
+          tools: composer:v2
+          extensions: curl
+      - run: composer install
+      - name: Do sync
+        run: php sync.php
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REDDIT_ACCESS_TOKEN: ${{ secrets.REDDIT_ACCESS_TOKEN }}
+          REDDIT_FEED_HASH: ${{ secrets.REDDIT_FEED_HASH }}
+          REDDIT_ACCOUNT_NAME: ${{ secrets.REDDIT_ACCOUNT_NAME }}

@@ -1,0 +1,20 @@
+{
+  "name": "mglaman/reddit-mod-log",
+  "description": "Downloads mod logs for a subreddit to make them public",
+  "type": "project",
+  "require": {
+    "php": "^8.1",
+    "guzzlehttp/guzzle": "^7"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "src"
+    }
+  },
+  "authors": [
+    {
+      "name": "Matt Glaman",
+      "email": "nmd.matt@gmail.com"
+    }
+  ]
+}
